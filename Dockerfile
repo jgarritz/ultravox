@@ -1,11 +1,12 @@
 # 1) Partimos de Python 3.10
 FROM python:3.10-slim
 
-# 2) Instalamos herramientas del sistema
+# 2) Instalamos herramientas del sistema y compiladores
 RUN apt-get update && \
-    apt-get install -y ffmpeg git build-essential cmake meson ninja-build libsndfile1-dev && \
+    apt-get install -y \
+      ffmpeg git build-essential cmake meson ninja-build libsndfile1-dev \
+      swig pkg-config libicu-dev && \
     rm -rf /var/lib/apt/lists/*
-
 # 3) Definimos el directorio de trabajo
 WORKDIR /app
 

@@ -1,3 +1,9 @@
+---
+title: AAAA
+app_file: app.py
+sdk: gradio
+sdk_version: 5.34.2
+---
 <p align="center">
   <picture>
     <img alt="Ultravox" src="https://zfmrfvimiaqahezndsse.supabase.co/storage/v1/object/public/images/custom/Introducing%20Ultravox%20Wide.jpg">

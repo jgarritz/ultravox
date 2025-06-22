@@ -1,29 +1,21 @@
-# 1) Partimos de Python 3.10
-FROM python:3.10-slim
+# Dockerfile
+FROM python:3.11-slim
 
-# 2) Instalamos herramientas del sistema y compiladores
-RUN apt-get update && \
-    apt-get install -y \
-      ffmpeg git build-essential cmake meson ninja-build libsndfile1-dev \
-      swig pkg-config libicu-dev && \
-    rm -rf /var/lib/apt/lists/*
-# 3) Definimos el directorio de trabajo
+# 1. Variables de entorno para que gradio no abra browser
+ENV GRADIO_SERVER_NAME="0.0.0.0" \
+    GRADIO_SERVER_PORT="7860"
+
 WORKDIR /app
 
-# 4) Copiamos solo los archivos de configuración
-COPY pyproject.toml poetry.lock ./
-
-# 5) Instalamos Poetry y dependencias sin dev
-RUN pip install --upgrade pip && \
-    pip install poetry && \
-    poetry config virtualenvs.create false && \
-    poetry install --no-interaction --no-ansi --without dev --no-root
-
-# 6) Copiamos el resto del código
+# 2. Copia solo lo esencial
 COPY . .
 
-# 7) Exponemos el puerto de Gradio
+# 3. Instala pip y luego tu requirements
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+
+# 4. Exponer el puerto que usa Gradio
 EXPOSE 7860
 
-# 8) Comando por defecto: arrancar demo en CPU
-CMD ["bash","-lc","export DEVICE=cpu && python3 tools/gradio_demo.py"]
+# 5. Comando por defecto: lanza tu app.py
+CMD ["python3", "app.py"]
